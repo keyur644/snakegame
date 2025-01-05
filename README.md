@@ -1,9 +1,9 @@
-Snake Game with Menu:-
+🟡Snake Game with Menu:-
 
 A classic Snake Game implemented using Python and Pygame, enhanced with a menu system, sound effects, and smooth gameplay mechanics. This game features options to start a new game, resume a paused game, and quit.
 
 
-Features:-
+🟡Features:-
 
 Menu System: Start a new game, resume, or quit.
 
@@ -18,7 +18,7 @@ Pause Functionality: Pause and resume your game anytime.
 High-Quality Graphics: Grid background, animated buttons, and snake details like eyes.
 
 
-Requirements:-
+🟡Requirements:-
 
 Python 3.8 or higher
 
@@ -46,7 +46,7 @@ cd snake-game```)
 ```click.wav```
 
 
-How to Play:-
+🟡How to Play:-
 
 1)Run the game:
 
@@ -72,7 +72,7 @@ Navigate the snake to eat the red food and grow longer.
 
 Avoid colliding with the snake's body or the edges of the game window.
 
-Screenshots:-
+🟡Screenshots:-
 1)Main Menu
 
 ![Screenshot 2025-01-05 224416](https://github.com/user-attachments/assets/eba16c4f-cead-492e-8eee-43f0c6969335)
@@ -89,7 +89,7 @@ Screenshots:-
 
 
 
-Customization:-
+🟡Customization:-
 
 Background Grid: Modify the ```create_background``` method for different styles.
 
@@ -98,15 +98,15 @@ Snake Speed: Adjust ```INITIAL_SPEED``` and ```SPEED_INCREMENT``` in the ```Snak
 Food Animation: Customize the pulsating effect in the update method.
 
 
-Known Issues:-
+🟡Known Issues:-
 
 None at the moment. Open an issue if you find any!
 
-Contributing:-
+🟡Contributing:-
 
 Contributions are welcome! Feel free to submit a pull request or create an issue for suggestions or bug reports.
 
-License:-
+🟡License:-
 
 This project is licensed under the MIT License. See the LICENSE file for details.
 
