@@ -1,0 +1,104 @@
+import random
+import curses
+from collections import deque
+
+# Initialize the screen
+def init_screen():
+    screen = curses.initscr()
+    curses.curs_set(0)
+    screen.keypad(1)
+    screen.timeout(100)
+    return screen
+
+# Directions (row_change, col_change)
+DIRECTIONS = {
+    curses.KEY_UP: (-1, 0),
+    curses.KEY_DOWN: (1, 0),
+    curses.KEY_LEFT: (0, -1),
+    curses.KEY_RIGHT: (0, 1)
+}
+
+class SnakeGame:
+    def __init__(self, rows=20, cols=20):
+        self.rows = rows
+        self.cols = cols
+        self.grid = [[0] * cols for _ in range(rows)]  # 2D grid
+        self.snake = deque([(rows // 2, cols // 2)])  # Snake starts in the middle
+        self.grid[self.snake[0][0]][self.snake[0][1]] = 1
+        self.food = None
+        self.spawn_food()
+        self.direction = curses.KEY_RIGHT
+
+    def spawn_food(self):
+        while True:
+            row = random.randint(0, self.rows - 1)
+            col = random.randint(0, self.cols - 1)
+            if self.grid[row][col] == 0:  # Ensure no collision with the snake
+                self.food = (row, col)
+                self.grid[row][col] = -1  # Mark food on the grid
+                break
+
+    def move_snake(self):
+        head_row, head_col = self.snake[0]
+        dir_row, dir_col = DIRECTIONS[self.direction]
+        new_head = (head_row + dir_row, head_col + dir_col)
+
+        # Check for collisions
+        if (
+            new_head[0] < 0 or new_head[0] >= self.rows or
+            new_head[1] < 0 or new_head[1] >= self.cols or
+            new_head in self.snake
+        ):
+            return False  # Game over
+
+        # Move the snake
+        self.snake.appendleft(new_head)
+        self.grid[new_head[0]][new_head[1]] = 1
+
+        # Check if the snake eats food
+        if new_head == self.food:
+            self.spawn_food()  # Spawn new food
+        else:
+            tail = self.snake.pop()  # Remove tail
+            self.grid[tail[0]][tail[1]] = 0
+
+        return True
+
+    def render(self, screen):
+        screen.clear()
+
+        # Draw the grid
+        for row in range(self.rows):
+            for col in range(self.cols):
+                if (row, col) in self.snake:
+                    screen.addstr(row, col * 2, "██")  # Snake body
+                elif (row, col) == self.food:
+                    screen.addstr(row, col * 2, "🍎")  # Food
+                else:
+                    screen.addstr(row, col * 2, "  ")  # Empty space
+
+        screen.refresh()
+
+def main(screen):
+    game = SnakeGame()
+
+    while True:
+        # Render the game state
+        game.render(screen)
+
+        # Get user input
+        key = screen.getch()
+        if key in DIRECTIONS and (DIRECTIONS[key][0] + DIRECTIONS[game.direction][0] != 0 or 
+                                  DIRECTIONS[key][1] + DIRECTIONS[game.direction][1] != 0):
+            game.direction = key
+
+        # Update game state
+        if not game.move_snake():
+            break  # Game over
+
+    screen.addstr(game.rows // 2, game.cols // 2, "Game Over!", curses.A_BOLD)
+    screen.refresh()
+    screen.getch()
+
+if __name__ == "__main__":
+    curses.wrapper(main)
